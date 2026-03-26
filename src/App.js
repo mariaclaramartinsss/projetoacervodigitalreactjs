@@ -1,23 +1,67 @@
-import { Outlet } from 'react-router-dom';
-import NavBar from './componentes/NavBar';
-import './App.css';
+import React, { useState } from 'react';
+import SubmitWork from './pages/SubmitWork';
+import Dashboard from './pages/Dashboard';
+import EnviarLook from './pages/EnviarLook';
+
 function App() {
+  const [telaAtiva, setTelaAtiva] = useState('quiz');
+
   return (
-    <>
-      <h1>Acervo Digital</h1>
-      {/* A NavBar é necessária para que a barra de navegação seja exibida em todas as páginas da aplicação, permitindo que os usuários naveguem facilmente entre as diferentes seções do site. */}
-      {/* Sem a NavBar, os usuários teriam dificuldade em acessar outras páginas da aplicação, o que poderia resultar em uma experiência de usuário ruim e dificultar a navegação. */}
-      {/* A NavBar é uma parte fundamental do layout da aplicação, proporcionando uma maneira intuitiva e acessível para os usuários explorarem o conteúdo do site. */}
-      <NavBar />
-      {/* Resto do conteúdo da página */}
-      {/* O Outlet é onde os componentes filhos serão renderizados */}
-      {/* Ele é necessário para que as rotas filhas sejam exibidas dentro do layout do App */}
-      {/* Sem o Outlet, as rotas filhas não seriam renderizadas, e você não veria o conteúdo das páginas correspondentes às rotas */}
-      {/* O Outlet é uma parte fundamental do sistema de roteamento do React Router, permitindo que você crie layouts reutilizáveis e organize suas rotas de forma hierárquica */}
-      {/* Ele é especialmente útil quando você tem um layout comum para várias páginas, como um cabeçalho ou uma barra de navegação, e deseja renderizar o conteúdo específico de cada página dentro desse layout */}
-      {/* Em resumo, o Outlet é essencial para que as rotas filhas sejam renderizadas corretamente dentro do layout do App, garantindo que o conteúdo das páginas seja exibido conforme esperado. */}
-      <Outlet />
-    </>
+    <div style={{ backgroundColor: '#fff', minHeight: '100vh' }}>
+      {/* NAVBAR LUXUOSA */}
+      <nav style={navStyle}>
+        <div style={logoStyle}>MODA 2026</div>
+        <div style={menuStyle}>
+          <span onClick={() => setTelaAtiva('quiz')} style={linkStyle(telaAtiva === 'quiz')}>ANÁLISE</span>
+          <span onClick={() => setTelaAtiva('cadastro')} style={linkStyle(telaAtiva === 'cadastro')}>UPLOAD</span>
+          <span onClick={() => setTelaAtiva('dashboard')} style={linkStyle(telaAtiva === 'dashboard')}>ACERVO</span>
+        </div>
+      </nav>
+
+      {/* LINHA DIVISORA FINA */}
+      <div style={{ height: '1px', backgroundColor: '#f0f0f0', width: '100%' }} />
+
+      {/* CONTEÚDO */}
+      <main style={{ paddingTop: '40px' }}>
+        {telaAtiva === 'quiz' && <SubmitWork />}
+        {telaAtiva === 'cadastro' && <EnviarLook />}
+        {telaAtiva === 'dashboard' && <Dashboard />}
+      </main>
+    </div>
   );
 }
+
+/* --- ESTILOS LUXO --- */
+const navStyle = {
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  padding: '25px 50px',
+  backgroundColor: '#fff',
+  fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif',
+};
+
+const logoStyle = {
+  fontSize: '1.2rem',
+  letterSpacing: '5px',
+  fontWeight: '300',
+  color: '#000'
+};
+
+const menuStyle = {
+  display: 'flex',
+  gap: '40px'
+};
+
+const linkStyle = (isActive) => ({
+  fontSize: '0.7rem',
+  letterSpacing: '2px',
+  cursor: 'pointer',
+  color: isActive ? '#000' : '#bbb',
+  fontWeight: isActive ? '600' : '300',
+  transition: '0.3s',
+  borderBottom: isActive ? '1px solid #000' : 'none',
+  paddingBottom: '5px'
+});
+
 export default App;

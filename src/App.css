@@ -1,21 +1,151 @@
+/* --- RESET E TIPOGRAFIA --- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  background-color: #f9f9f9; /* Cinza claríssimo de fundo */
+  color: #1a1a1a;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* --- CONTAINER PRINCIPAL --- */
 .App {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* --- NAVBAR (A FAIXA QUE ERA VERMELHA AGORA É PRETA) --- */
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.2rem 5%;
+  background: #000000; /* Preto luxo */
+  border-bottom: 1px solid #333;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.nav a {
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  transition: color 0.3s ease;
+}
+
+.nav a:hover {
+  color: #888; /* Efeito de cinza ao passar o mouse */
+}
+
+/* --- CONTAINER DE CONTEÚDO (LOGIN, QUIZ, ETC) --- */
+.container {
+  max-width: 800px;
+  margin: 3rem auto;
+  padding: 3rem;
+  background: #ffffff;
+  border-radius: 0px; /* Bordas retas para estética de grife */
+  box-shadow: 0 10px 40px rgba(0,0,0,0.05);
+  border: 1px solid #eee;
+}
+
+/* --- GRID E LAYOUT --- */
+.grid {
+  display: grid;
+  gap: 1.5rem;
+}
+
+h1, h2, h3 {
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 1.5rem;
+}
+
+/* --- BOTÕES --- */
+button {
+  background-color: #000;
+  color: #fff;
+  border: 1px solid #000;
+  padding: 12px 24px;
+  font-size: 0.9rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  background-color: #fff;
+  color: #000;
+}
+
+/* --- INPUTS --- */
+input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+input:focus {
+  border-color: #000;
+}
+
+/* --- RODAPÉ --- */
+footer {
+  margin-top: auto;
+  padding: 2rem;
   text-align: center;
+  font-size: 0.7rem;
+  color: #bbb;
+  text-transform: uppercase;
+  letter-spacing: 2px;
 }
-.nav{
-  display:flex;  gap:.5rem;  padding:1rem;  background:#fff;  border-bottom:1px solid #e2e8f0
+/* --- ANIMAÇÃO DE TRANSIÇÃO (O TOQUE DE SEDA) --- */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
-/* A classe .container é necessária para estilizar o contêiner principal da página, proporcionando uma aparência agradável e organizada para o conteúdo. 
-Ela define a largura máxima do contêiner, centraliza-o na página, adiciona espaçamento interno, um fundo branco, bordas arredondadas e uma sombra sutil para destacar o conteúdo. 
-Sem a classe .container, o conteúdo da página ficaria desorganizado e sem estilo, dificultando a leitura e a navegação para os usuários. */
-/* Irá centralizar os dados da págin Login.jsx. */
-.container{
-  max-width:720px;margin:2rem auto;padding:1.5rem;background:#fff;border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.06)
+
+.fade-in {
+  animation: fadeIn 0.8s ease-out forwards;
 }
-/* A classe .grid é necessária para criar um layout de grade flexível e responsivo, permitindo que os elementos dentro do contêiner sejam organizados de forma eficiente e visualmente agradável.
-Ela define o display como grid e adiciona um espaçamento entre os elementos usando a propriedade gap. Sem a classe .grid, os elementos dentro do contêiner ficariam desorganizados e sem um layout estruturado, dificultando a leitura e a navegação para os usuários. A classe .grid é fundamental para criar uma experiência de usuário agradável e organizada, especialmente em páginas com múltipl
-os elementos, como formulários ou listas de itens. */
-/* Organiza os itens da tela de login um abaixo do outro, com um espaçamento entre eles. */
-.grid{
-  display:grid;
-  gap:1rem
+
+/* --- ESTILO DOS CARDS NO DASHBOARD (Dando volume ao acervo) --- */
+.card-look {
+  background: #ffffff;
+  padding: 2rem;
+  border: 1px solid #eee;
+  text-align: center;
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); /* Transição suave */
+  cursor: pointer;
+}
+
+.card-look:hover {
+  transform: translateY(-5px); /* Eleva levemente o card */
+  box-shadow: 0 20px 40px rgba(0,0,0,0.08); /* Sombra profunda e elegante */
+  border-color: #000; /* A borda destaca no hover */
+}
+
+/* --- AJUSTE PARA O CONTEÚDO NÃO "COLAR" NA NAVBAR --- */
+main {
+  padding-top: 2rem;
+  flex: 1;
 }
