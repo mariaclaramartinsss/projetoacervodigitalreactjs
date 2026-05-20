@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion'; // Removido AnimatePresence que não era usado aqui
+import PageTransition from '../components/PageTransition';
 
 const Curadoria = () => {
   const navigate = useNavigate();
@@ -7,67 +9,91 @@ const Curadoria = () => {
 
   useEffect(() => {
     const salvo = localStorage.getItem('perfilEstilo');
-    if (salvo) setEstilo(salvo);
+    // Ajuste: Garante que o texto esteja em maiúsculo para bater com as chaves do objeto 'conteudoEstilo'
+    if (salvo) setEstilo(salvo.toUpperCase()); 
   }, []);
 
-  const dadosCuradoria = {
+  const conteudoEstilo = {
     MINIMALISTA: {
-      txt: "Foco no essencial. Sua curadoria preza por linhas limpas e cores neutras.",
-      pecas: ["Blazer Oversized Cinza", "T-shirt Algodão Egípcio", "Calça Reta Off-White"],
-      paleta: ["#FFFFFF", "#D3D3D3", "#4A4A4A"]
+      tendencia: "O Minimalismo em 2026 foca no 'Quiet Luxury'. O segredo é investir em tecidos nobres como linho e seda branca, eliminando logos e focando no corte reto.",
+      dica: "Aprimore com: Alfaiataria desconstruída e acessórios em metal escovado.",
+      fotos: ["minimalista1.jpg", "minimalista2.jpg", "minimalista3.jpg"]
     },
     STREETWEAR: {
-      txt: "Expressão e volume. Sua curadoria foca no conforto urbano e peças statement.",
-      pecas: ["Moletom Heavyweight", "Calça Cargo Utilitária", "Sneaker Cano Alto"],
-      paleta: ["#000000", "#FF4D00", "#696969"]
+      tendencia: "A tendência atual é o 'Tech-Utility'. Misture peças oversized com elementos funcionais (bolsos cargo, fivelas) e tecidos impermeáveis.",
+      dica: "Aprimore com: Tênis tratorados e sobreposição de texturas contrastantes.",
+      fotos: ["street1.jpg", "street2.jpg", "street3.jpg"]
     },
     ELEGANTE: {
-      txt: "Sofisticação atemporal. Sua curadoria une o clássico ao contemporâneo.",
-      pecas: ["Sobretudo Estruturado", "Mocassim de Couro", "Camisa em Seda"],
-      paleta: ["#1C1C1C", "#E5E5E5", "#3D0C11"]
+      tendencia: "A elegância de 2026 pede o 'New Classic'. O visual é polido, mas com toques modernos como transparências sutis e cores monocromáticas vibrantes.",
+      dica: "Aprimore com: Cinturas bem marcadas e sapatos de bico fino com design arquitetônico.",
+      fotos: ["elegante1.jpg", "elegante2.jpg", "elegante3.jpg"]
     }
   };
 
-  const info = dadosCuradoria[estilo] || dadosCuradoria.MINIMALISTA;
+  // Se o estilo salvo for diferente dos 3 acima, ele volta para MINIMALISTA por segurança
+  const info = conteudoEstilo[estilo] || conteudoEstilo.MINIMALISTA;
 
   return (
-    <div style={containerStyle}>
-      <p style={labelStyle}>SUA SELEÇÃO EXCLUSIVA</p>
-      <h1 style={titleStyle}>{estilo} 2026</h1>
-      <p style={descStyle}>{info.txt}</p>
+    <PageTransition>
+      <div style={containerStyle}>
+        <header style={headerStyle}>
+          <span style={labelStyle}>GUIA DE ESTILO 2026</span>
+          <h1 style={titleStyle}>{estilo}</h1>
+        </header>
 
-      <div style={gridStyle}>
-        {info.pecas.map((item, i) => (
-          <div key={i} style={itemCard}>
-            <div style={imgBox}>FOTO EM BREVE</div>
-            <p style={itemTxt}>{item}</p>
-          </div>
-        ))}
-      </div>
+        <section style={infoBox}>
+          <h2 style={subTitle}>Como elevar sua estética:</h2>
+          <p style={description}>{info.tendencia}</p>
+          <p style={highlightDica}>{info.dica}</p>
+        </section>
 
-      <div style={paletaBox}>
-        <p style={{ fontSize: '0.7rem', letterSpacing: '2px', marginBottom: '15px' }}>PALETA SUGERIDA</p>
-        <div style={{ display: 'flex', gap: '10px', justifyContent: 'center' }}>
-          {info.paleta.map((cor, i) => (
-            <div key={i} style={{ width: '30px', height: '30px', borderRadius: '50%', backgroundColor: cor, border: '1px solid #eee' }}></div>
+        <div style={galleryGrid}>
+          {info.fotos.map((foto, index) => (
+            <motion.div 
+              key={index}
+              whileHover={{ scale: 1.05 }}
+              transition={{ duration: 0.4 }}
+              style={cardFoto}
+            >
+              <img 
+                // Garanta que a pasta public/fotos-estilos exista!
+                src={`/fotos-estilos/${foto}`} 
+                alt={`Tendência ${estilo}`} 
+                style={imgStyle}
+                onError={(e) => { 
+                  e.target.src = "https://via.placeholder.com/400x500?text=Foto+Nao+Encontrada"; 
+                }}
+              />
+              <div style={imgOverlay}>REF #{index + 1}</div>
+            </motion.div>
           ))}
         </div>
-      </div>
 
-      <button onClick={() => navigate('/certificate')} style={btnStyle}>VOLTAR AO GUIA</button>
-    </div>
+        <div style={navGroup}>
+          <button onClick={() => navigate('/certificate')} style={btnSec}>← VOLTAR AO DNA</button>
+          <button onClick={() => navigate('/')} style={btnPri}>MENU PRINCIPAL</button>
+        </div>
+      </div>
+    </PageTransition>
   );
 };
 
-const containerStyle = { minHeight: '100vh', padding: '60px 20px', textAlign: 'center', backgroundColor: '#fff', fontFamily: 'serif' };
-const labelStyle = { fontSize: '0.6rem', letterSpacing: '4px', color: '#999', marginBottom: '10px' };
-const titleStyle = { fontSize: '2rem', fontWeight: '300', letterSpacing: '5px', marginBottom: '20px' };
-const descStyle = { fontSize: '0.9rem', color: '#666', maxWidth: '400px', margin: '0 auto 40px auto', lineHeight: '1.6' };
-const gridStyle = { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '20px', maxWidth: '800px', margin: '0 auto' };
-const itemCard = { border: '1px solid #f0f0f0', padding: '20px' };
-const imgBox = { width: '100%', height: '180px', backgroundColor: '#f9f9f9', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.6rem', color: '#ccc', marginBottom: '15px' };
-const itemTxt = { fontSize: '0.8rem', fontWeight: 'bold', textTransform: 'uppercase' };
-const paletaBox = { marginTop: '50px', paddingTop: '30px', borderTop: '1px solid #eee' };
-const btnStyle = { marginTop: '40px', padding: '15px 30px', border: '1px solid #000', background: 'none', cursor: 'pointer', fontSize: '0.7rem', letterSpacing: '2px' };
+/* --- MANTENHA SEUS ESTILOS IGUAIS --- */
+const containerStyle = { padding: '60px 20px', maxWidth: '1000px', margin: '0 auto', fontFamily: 'serif', background: '#fff' };
+const headerStyle = { textAlign: 'center', marginBottom: '50px' };
+const labelStyle = { letterSpacing: '5px', fontSize: '0.7rem', color: '#999' };
+const titleStyle = { fontSize: '3rem', letterSpacing: '10px', textTransform: 'uppercase', fontWeight: '300', margin: '10px 0' };
+const infoBox = { borderLeft: '1px solid #000', paddingLeft: '30px', margin: '0 auto 60px auto', maxWidth: '800px' };
+const subTitle = { fontSize: '0.8rem', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '15px', color: '#555' };
+const description = { fontSize: '1.2rem', lineHeight: '1.8', marginBottom: '20px', color: '#111' };
+const highlightDica = { fontSize: '0.9rem', fontStyle: 'italic', color: '#777' };
+const galleryGrid = { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '20px' };
+const cardFoto = { position: 'relative', overflow: 'hidden', borderRadius: '2px', boxShadow: '0 10px 30px rgba(0,0,0,0.05)' };
+const imgStyle = { width: '100%', height: '450px', objectFit: 'cover', display: 'block' };
+const imgOverlay = { position: 'absolute', bottom: '20px', left: '20px', color: '#fff', fontSize: '0.6rem', letterSpacing: '2px', background: 'rgba(0,0,0,0.4)', padding: '5px 10px' };
+const navGroup = { display: 'flex', justifyContent: 'center', gap: '15px', marginTop: '80px' };
+const btnPri = { background: '#000', color: '#fff', border: 'none', padding: '15px 30px', cursor: 'pointer', letterSpacing: '2px', fontSize: '0.7rem' };
+const btnSec = { background: 'none', color: '#000', border: '1px solid #000', padding: '15px 30px', cursor: 'pointer', letterSpacing: '2px', fontSize: '0.7rem' };
 
 export default Curadoria;

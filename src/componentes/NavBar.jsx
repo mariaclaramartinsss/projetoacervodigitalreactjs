@@ -5,7 +5,7 @@ const NavBar = () => {
   return (
     <nav style={navStyle}>
       <div style={logoStyle}>
-        <Link to="/" style={{ color: '#fff', textDecoration: 'none' }}>MODA 2026</Link>
+        <Link to="/" style={{ color: '#fff', textDecoration: 'none' }}>OUZE 2026</Link>
       </div>
 
       <ul style={menuStyle}>

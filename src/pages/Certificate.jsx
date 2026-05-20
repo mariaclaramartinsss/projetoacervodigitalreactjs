@@ -1,12 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import PageTransition from '../components/PageTransition';
 
 const Certificate = () => {
   const navigate = useNavigate();
   const [userEstilo, setUserEstilo] = useState("");
 
   useEffect(() => {
-    const resultadoSalvo = localStorage.getItem('perfilEstilo');
+    // Buscamos o que está salvo. Se estiver "ROUPAS DE RUA", convertemos para "STREETWEAR"
+    let resultadoSalvo = localStorage.getItem('perfilEstilo');
+    
+    if (resultadoSalvo === "ROUPAS DE RUA") {
+      resultadoSalvo = "STREETWEAR";
+      localStorage.setItem('perfilEstilo', "STREETWEAR");
+    }
+
     if (resultadoSalvo) {
       setUserEstilo(resultadoSalvo);
     } else {
@@ -14,47 +22,39 @@ const Certificate = () => {
     }
   }, []);
 
-  const descricoes = {
-    MINIMALISTA: "Curadoria consciente, priorizando a essência e a funcionalidade.",
-    STREETWEAR: "Energia urbana, expressão criativa e o pulso das ruas.",
-    ELEGANTE: "Sofisticação atemporal, valorizando a excelência nos detalhes."
-  };
-
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', backgroundColor: '#fff', fontFamily: 'serif' }}>
-      <p style={{ letterSpacing: '4px', fontSize: '0.7rem', color: '#888', marginBottom: '20px' }}>ANÁLISE DE DNA CONCLUÍDA</p>
-      
-      <div style={{ backgroundColor: '#000', color: '#fff', padding: '60px 40px', textAlign: 'center', width: '100%', maxWidth: '450px' }}>
-        <h2 style={{ fontSize: '2.5rem', letterSpacing: '5px', margin: '0 0 20px 0', textTransform: 'uppercase' }}>{userEstilo}</h2>
-        <div style={{ width: '30px', height: '1px', backgroundColor: '#fff', margin: '0 auto 20px auto', opacity: 0.5 }}></div>
-        <p style={{ fontSize: '0.9rem', lineHeight: '1.6', opacity: 0.8 }}>
-          {descricoes[userEstilo] || "Realize o quiz para identificar sua essência de moda."}
-        </p>
-      </div>
-
-      <div style={{ display: 'flex', gap: '10px', marginTop: '30px', flexWrap: 'wrap', justifyContent: 'center' }}>
-        <button 
-          onClick={() => navigate('/curadoria')} 
-          style={{ padding: '12px 20px', border: 'none', background: '#000', color: '#fff', cursor: 'pointer', letterSpacing: '2px', fontSize: '0.7rem', fontWeight: 'bold' }}
-        >
-          VER CURADORIA
-        </button>
+    <PageTransition>
+      <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', backgroundColor: '#fff', fontFamily: 'serif', padding: '20px' }}>
         
-        <button 
-          onClick={() => window.print()} 
-          style={{ padding: '12px 20px', border: '1px solid #000', background: 'none', cursor: 'pointer', letterSpacing: '2px', fontSize: '0.7rem' }}
-        >
-          SALVAR PDF
-        </button>
+        <p style={{ letterSpacing: '4px', fontSize: '0.7rem', color: '#888', marginBottom: '20px', textTransform: 'uppercase' }}>Análise Conclusão</p>
+        <div style={{ width: '40px', height: '1px', backgroundColor: '#000', marginBottom: '30px' }}></div>
+        
+        <p style={{ letterSpacing: '2px', fontSize: '0.9rem', marginBottom: '40px' }}>MARIA, SEU DNA É:</p>
 
-        <button 
-          onClick={() => navigate('/submit')} 
-          style={{ padding: '12px 20px', border: '1px solid #000', background: 'none', cursor: 'pointer', letterSpacing: '2px', fontSize: '0.7rem' }}
-        >
-          REFAZER
-        </button>
+        <div style={{ border: '1px solid #eee', padding: '50px 20px', textAlign: 'center', width: '100%', maxWidth: '500px', marginBottom: '40px' }}>
+          <h2 style={{ fontSize: '2.5rem', letterSpacing: '8px', margin: 0, textTransform: 'uppercase', fontWeight: '400' }}>
+            {userEstilo}
+          </h2>
+        </div>
+
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '15px', width: '100%', maxWidth: '500px' }}>
+          {/* BOTÃO QUE LEVA PARA A GALERIA DE FOTOS */}
+          <button 
+            onClick={() => navigate('/curadoria')} 
+            style={{ padding: '18px', background: '#000', color: '#fff', border: 'none', cursor: 'pointer', letterSpacing: '2px', fontSize: '0.75rem', fontWeight: 'bold' }}
+          >
+            ACESSAR CURADORIA E TENDÊNCIAS
+          </button>
+
+          <button 
+            onClick={() => navigate('/submit')} 
+            style={{ padding: '15px', background: 'none', border: '1px solid #eee', color: '#888', cursor: 'pointer', letterSpacing: '2px', fontSize: '0.7rem' }}
+          >
+            REFAZER TESTE
+          </button>
+        </div>
       </div>
-    </div>
+    </PageTransition>
   );
 };
 
